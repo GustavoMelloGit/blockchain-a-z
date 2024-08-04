@@ -39,6 +39,15 @@ export class Blockchain {
     return proof;
   }
 
+  mine(): Block {
+    const lastBlock = this.getLastBlock();
+    const lastProof = lastBlock.proof;
+    const proof = this.#proofOfWork(lastProof);
+    const previousHash = lastBlock.hash;
+    const block = this.#createBlock(proof, previousHash);
+    return block;
+  }
+
   #isValidProof(previousProof: number, newProof: number): boolean {
     const guess = String(newProof ** 2 - previousProof ** 2);
     const guessHash = Hasher.sha256(guess);
@@ -52,10 +61,10 @@ export class Blockchain {
     let prevBlock = this.chain[0];
 
     for (let block of this.chain) {
-      // Ensure the chain is not broken
-      if (prevBlock.hash !== block.previousHash) return false;
-      // Ensure the proof of work is valid
-      if (!this.#isValidProof(prevBlock.proof, block.proof)) return false;
+      const chainIsNotBroken = prevBlock.hash !== block.previousHash;
+      if (chainIsNotBroken) return false;
+      const isPowValid = this.#isValidProof(prevBlock.proof, block.proof);
+      if (!isPowValid) return false;
 
       prevBlock = block;
     }
