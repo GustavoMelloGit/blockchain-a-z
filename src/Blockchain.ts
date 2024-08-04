@@ -8,8 +8,33 @@ export class Blockchain {
     this.#createBlock(1, '0'); // Genesis block
   }
 
-  get chain(): Block[] {
-    return this.#chain.slice(); // Return clone of array
+  mine(): Block {
+    const lastBlock = this.#getLastBlock();
+    const lastProof = lastBlock.proof;
+    const proof = this.#proofOfWork(lastProof);
+    const previousHash = lastBlock.hash;
+    const block = this.#createBlock(proof, previousHash);
+    return block;
+  }
+
+  isChainValid(): boolean {
+    const onlyHasGenesisBlock = this.chain.length === 1;
+    if (onlyHasGenesisBlock) return true;
+
+    let prevBlock = this.chain[0];
+
+    for (let [index, block] of this.chain.entries()) {
+      const isGenesisBlock = index === 0;
+      if (isGenesisBlock) continue;
+      const chainIsBroken = prevBlock.hash !== block.previousHash;
+      if (chainIsBroken) return false;
+      const powIsValid = this.#isValidProof(prevBlock.proof, block.proof);
+      if (!powIsValid) return false;
+
+      prevBlock = block;
+    }
+
+    return true;
   }
 
   #addToChain(block: Block): void {
@@ -39,39 +64,14 @@ export class Blockchain {
     return proof;
   }
 
-  mine(): Block {
-    const lastBlock = this.#getLastBlock();
-    const lastProof = lastBlock.proof;
-    const proof = this.#proofOfWork(lastProof);
-    const previousHash = lastBlock.hash;
-    const block = this.#createBlock(proof, previousHash);
-    return block;
-  }
-
   #isValidProof(previousProof: number, newProof: number): boolean {
     const guess = String(newProof ** 2 - previousProof ** 2);
     const guessHash = Hasher.sha256(guess);
     return guessHash.startsWith('00');
   }
 
-  isChainValid(): boolean {
-    const onlyHasGenesisBlock = this.chain.length === 1;
-    if (onlyHasGenesisBlock) return true;
-
-    let prevBlock = this.chain[0];
-
-    for (let [index, block] of this.chain.entries()) {
-      const isGenesisBlock = index === 0;
-      if (isGenesisBlock) continue;
-      const chainIsBroken = prevBlock.hash !== block.previousHash;
-      if (chainIsBroken) return false;
-      const powIsValid = this.#isValidProof(prevBlock.proof, block.proof);
-      if (!powIsValid) return false;
-
-      prevBlock = block;
-    }
-
-    return true;
+  get chain(): Block[] {
+    return this.#chain.slice(); // Return clone of array
   }
 }
 
