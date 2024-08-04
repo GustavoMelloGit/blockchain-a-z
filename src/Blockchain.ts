@@ -53,18 +53,16 @@ export class Blockchain {
     const onlyHasGenesisBlock = this.chain.length === 1;
     if (onlyHasGenesisBlock) return true;
 
-    let isValid = true;
     let prevBlock = this.chain[0];
 
     for (let block of this.chain) {
       if (prevBlock.hash !== block.previousHash) {
-        isValid = false;
-        break;
+        return false;
       }
       prevBlock = block;
     }
 
-    return isValid;
+    return true;
   }
 }
 
