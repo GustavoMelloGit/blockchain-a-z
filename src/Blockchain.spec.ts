@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Block } from './Block';
 import { Blockchain } from './Blockchain';
 
 describe('Blockchain', () => {
   let blockchain: Blockchain;
   beforeEach(() => {
+    vi.clearAllMocks();
     blockchain = new Blockchain();
   });
 
@@ -20,8 +21,13 @@ describe('Blockchain', () => {
     expect(blockchain.chain.length).toBe(1);
   });
 
-  it('should be valid if only the genesis block is present in chain', () => {
+  it('chain should be valid if only the genesis block is present in chain', () => {
     const isValid = blockchain.isChainValid();
     expect(isValid).toBe(true);
+  });
+
+  it('should be able to validate chain after mining a valid block', () => {
+    blockchain.mine();
+    expect(blockchain.isChainValid()).toBe(true);
   });
 });
