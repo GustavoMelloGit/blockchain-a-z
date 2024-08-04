@@ -46,10 +46,6 @@ export class Blockchain {
   }
 
   isChainValid(): boolean {
-    return this.#checkChainHashes();
-  }
-
-  #checkChainHashes(): boolean {
     const onlyHasGenesisBlock = this.chain.length === 1;
     if (onlyHasGenesisBlock) return true;
 
