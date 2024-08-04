@@ -24,7 +24,7 @@ export class Blockchain {
     return block;
   }
 
-  getLastBlock(): Block {
+  #getLastBlock(): Block {
     const lastBlock = this.chain.at(-1);
     if (!lastBlock)
       throw new Error('A Blockchain should always have at least 1 block');
@@ -40,7 +40,7 @@ export class Blockchain {
   }
 
   mine(): Block {
-    const lastBlock = this.getLastBlock();
+    const lastBlock = this.#getLastBlock();
     const lastProof = lastBlock.proof;
     const proof = this.#proofOfWork(lastProof);
     const previousHash = lastBlock.hash;
