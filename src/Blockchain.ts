@@ -52,9 +52,11 @@ export class Blockchain {
     let prevBlock = this.chain[0];
 
     for (let block of this.chain) {
-      if (prevBlock.hash !== block.previousHash) {
-        return false;
-      }
+      // Ensure the chain is not broken
+      if (prevBlock.hash !== block.previousHash) return false;
+      // Ensure the proof of work is valid
+      if (!this.#isValidProof(prevBlock.proof, block.proof)) return false;
+
       prevBlock = block;
     }
 
