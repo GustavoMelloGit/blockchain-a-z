@@ -1,10 +1,18 @@
 import express from 'express';
+import { makeBlockchain } from './Blockchain';
 
 const app = express();
-const port = 3000;
+app.use(express.json());
+const port = 3333;
+
+const blockchain = makeBlockchain();
 
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send(`Server health: ✅ Online`);
+});
+
+app.post('/mine', (req, res) => {
+  res.status(200).send(blockchain.chain);
 });
 
 app.listen(port, () => {
