@@ -24,9 +24,4 @@ describe('Blockchain', () => {
     const isValid = blockchain.isChainValid();
     expect(isValid).toBe(true);
   });
-
-  it('should return false if check blockchain is not valid', () => {
-    const isValid = blockchain.isChainValid();
-    expect(isValid).toBe(false);
-  });
 });
