@@ -9,47 +9,54 @@ export class Blockchain {
   }
 
   get chain() {
-    return this.#chain.slice(); // Array clone
+    return this.#chain.slice(); // Return clone of array
+  }
+
+  #addToChain(block: Block) {
+    this.#chain.push(block);
   }
 
   #createBlock(proof: number, previous_hash: string): Block {
-    const newIndex = this.#chain.length + 1;
+    const newIndex = this.chain.length + 1;
     const timestamp = new Date().getTime();
     const block = new Block(newIndex, timestamp, previous_hash, proof);
-    this.#chain.push(block);
+    this.#addToChain(block);
     return block;
   }
 
   getLastBlock(): Block {
-    const lastBlock = this.#chain.at(-1);
+    const lastBlock = this.chain.at(-1);
     if (!lastBlock)
       throw new Error('A Blockchain should always have at least 1 block');
     return lastBlock;
   }
 
-  proofOfWork(previousProof: number): number {
+  #proofOfWork(previousProof: number): number {
     let proof = 0;
-    while (!this.isValidProof(previousProof, proof)) {
+    while (!this.#isValidProof(previousProof, proof)) {
       proof++;
     }
     return proof;
   }
 
-  isValidProof(previousProof: number, newProof: number): boolean {
+  #isValidProof(previousProof: number, newProof: number): boolean {
     const guess = String(newProof ** 2 - previousProof ** 2);
     const guessHash = Hasher.sha256(guess);
     return guessHash.startsWith('00');
   }
 
   isChainValid(): boolean {
-    return this.checkChainHashes();
+    return this.#checkChainHashes();
   }
 
-  checkChainHashes(): boolean {
-    let isValid = true;
-    let prevBlock = this.#chain[0];
+  #checkChainHashes(): boolean {
+    const onlyHasGenesisBlock = this.chain.length === 1;
+    if (onlyHasGenesisBlock) return true;
 
-    for (let block of this.#chain) {
+    let isValid = true;
+    let prevBlock = this.chain[0];
+
+    for (let block of this.chain) {
       if (prevBlock.hash !== block.previousHash) {
         isValid = false;
         break;

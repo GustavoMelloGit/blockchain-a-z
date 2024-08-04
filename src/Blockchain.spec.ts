@@ -19,4 +19,14 @@ describe('Blockchain', () => {
     blockchain.chain.push(new Block(2, 1, '', 1));
     expect(blockchain.chain.length).toBe(1);
   });
+
+  it('should be valid if only the genesis block is present', () => {
+    const isValid = blockchain.isChainValid();
+    expect(isValid).toBe(true);
+  });
+
+  it('should return false if check blockchain is not valid', () => {
+    const isValid = blockchain.isChainValid();
+    expect(isValid).toBe(false);
+  });
 });
