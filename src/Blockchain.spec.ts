@@ -20,7 +20,7 @@ describe('Blockchain', () => {
     expect(blockchain.chain.length).toBe(1);
   });
 
-  it('should be valid if only the genesis block is present', () => {
+  it('should be valid if only the genesis block is present in chain', () => {
     const isValid = blockchain.isChainValid();
     expect(isValid).toBe(true);
   });

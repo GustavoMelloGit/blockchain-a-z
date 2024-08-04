@@ -8,11 +8,11 @@ export class Blockchain {
     this.#createBlock(1, '0'); // Genesis block
   }
 
-  get chain() {
+  get chain(): Block[] {
     return this.#chain.slice(); // Return clone of array
   }
 
-  #addToChain(block: Block) {
+  #addToChain(block: Block): void {
     this.#chain.push(block);
   }
 
