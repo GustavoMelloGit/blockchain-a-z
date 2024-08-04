@@ -26,7 +26,7 @@ describe('Blockchain', () => {
     expect(isValid).toBe(true);
   });
 
-  it('should be able to validate chain after mining a valid block', () => {
+  it('chain should be valid after mining a valid block', () => {
     blockchain.mine();
     expect(blockchain.isChainValid()).toBe(true);
   });
