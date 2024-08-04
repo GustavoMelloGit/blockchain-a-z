@@ -61,8 +61,8 @@ export class Blockchain {
     let prevBlock = this.chain[0];
 
     for (let block of this.chain) {
-      const chainIsNotBroken = prevBlock.hash !== block.previousHash;
-      if (chainIsNotBroken) return false;
+      const chainIsBroken = prevBlock.hash !== block.previousHash;
+      if (chainIsBroken) return false;
       const isPowValid = this.#isValidProof(prevBlock.proof, block.proof);
       if (!isPowValid) return false;
 
