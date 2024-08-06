@@ -17,7 +17,7 @@ Welcome to my repository for the **[Blockchain A-Z: Build a Blockchain](https://
 
 ## 🛠️ Tech Stack
 
-- **Language**: Typescript
+- **Language**: Typescript, Go
 - **Libraries**: Express, Crypto-js, Vitest
 - **Concepts**: Blockchain, Proof of Work, Cryptography, Smart Contracts
 
