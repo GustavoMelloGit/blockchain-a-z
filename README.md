@@ -5,6 +5,7 @@ Welcome to my repository for the **[Blockchain A-Z: Build a Blockchain](https://
 ## 📁 Project Structure
 
 - **create-a-blockchain**: Building the foundation of a simple blockchain.
+- **create-a-blockchain-go**: Same as above, but in Go.
 
 ## 🚀 Get Started
 
